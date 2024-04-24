@@ -80,7 +80,7 @@ _____________________________________________________
 ```
 ├── Dockerfile
 ├── README.md
-├── images/
+├── imag/
 ├── node_modules/
 ├── package-lock.json
 ├── package.json
