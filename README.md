@@ -69,3 +69,92 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+_____________________________________________________
+
+## Step by step
+
+### Estructure
+
+```
+├── Dockerfile
+├── README.md
+├── images/
+├── node_modules/
+├── package-lock.json
+├── package.json
+├── public/
+├── src/
+└── yarn.lock
+```
+
+### Containerization of the Project
+
+A Dockerfile will be created in the project directory to containerize the application. The Dockerfile will contain the following instructions:
+
+```FROM node:20.5.1-alpine
+RUN mkdir -p /app
+WORKDIR /app
+COPY . .
+RUN npm cache clean --force
+RUN npm install
+RUN npm run build
+EXPOSE 3000
+ENTRYPOINT ["npm", "run", "start"]
+```
+
+### Automation with GitHub Actions
+
+GitHub Actions will be used to automate the containerization and deployment process of the application. Below is the YAML configuration file for GitHub Actions:
+
+```
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+ 
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v3
+    - name: Docker Setup Buildx
+      uses: docker/setup-buildx-action@v3.0.0
+    - name: Docker Login
+      uses: docker/login-action@v1
+      with:
+            username: ${{ secrets.DOCKER_USERNAME }}
+            password: ${{ secrets.DOCKER_PASSWORD}}
+    - name: Build and Push Docker image
+      uses: docker/build-push-action@v5.0.0
+      with:
+          context: .  # Ruta al contexto de construcción (puede ser el directorio actual)
+          file: ./Dockerfile  # Ruta al Dockerfile
+          push: true  # Habilitar el empuje de la imagen
+          tags: ${{ secrets.DOCKER_USERNAME }}/node-ci:latest  # Nombre y etiqueta de la imagen
+      env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+```
+
+_Note:_ 
+It's also necessary to configure the secrets in GitHub.
+
+
+<img src="img/env.jpeg">
+
+
+ ## Evidences
+
+<img src="img/pipeline.jpeg">
+
+<img src="img/dockerhub.jpeg">
+
+
+
+By
+[Camilo Gonzalez](https://github.com/camilogonzalez7424)
