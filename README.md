@@ -152,6 +152,7 @@ It's also necessary to configure the secrets in GitHub.
 
 <img src="img/pipeline.jpeg">
 
+- [Dockerhub](https://hub.docker.com/r/camilogonzalez7424/node-ci)
 <img src="img/dockerhub.jpeg">
 
 
