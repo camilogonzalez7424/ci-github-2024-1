@@ -93,7 +93,8 @@ _____________________________________________________
 
 A Dockerfile will be created in the project directory to containerize the application. The Dockerfile will contain the following instructions:
 
-```FROM node:20.5.1-alpine
+```
+FROM node:20.5.1-alpine
 RUN mkdir -p /app
 WORKDIR /app
 COPY . .
